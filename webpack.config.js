@@ -2,6 +2,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import path from 'path'
 
 export default {
+    target: 'web',
     mode: process.env.NODE_ENV || 'development',
     entry: './src/js/main.js',
     output: {
