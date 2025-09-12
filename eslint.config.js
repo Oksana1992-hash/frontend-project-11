@@ -7,7 +7,7 @@ export default defineConfig([
   {
     files: ['**/*.{js,mjs,cjs}'],
     plugins: {
-      'js': js,
+      js: js,
       '@stylistic': stylistic,
     },
     extends: ['js/recommended'],
@@ -15,7 +15,7 @@ export default defineConfig([
       globals: globals.node,
     },
     rules: {
-      'semi': ['error', 'never'],
+      semi: ['error', 'never'],
       'quote-props': ['error', 'as-needed'],
     },
   },
