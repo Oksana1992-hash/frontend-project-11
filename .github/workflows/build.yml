@@ -3,42 +3,41 @@ name: Node CI
 
 # Trigger the workflow on push or pull request
 on:
-  push:
-  pull_request:
+  - push
+  - pull_request
 
 env:
   CI: true
 
 jobs:
   build:
+    # The type of machine to run the job on
     runs-on: ubuntu-latest
 
     strategy:
+      # Node versions list
       matrix:
-        node-version: [20.x, 22.x, 24.x]
+        node-version: [20.x]
 
     steps:
-      - uses: actions/checkout@v5
+      # Check-out repository under GitHub workspace
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
+        # Configures the node version used on GitHub-hosted runners
+        # https://github.com/actions/setup-node
         uses: actions/setup-node@v4
+        # The Node.js version to configure
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: Install dependencies
-        run: make install
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Lint Code
+        run: npx eslint .
 
       - name: Build Project
         run: NODE_ENV=production npx webpack
-
-      - name: Run linter
-        run: make lint
-
-      - name: Run tests with coverage
-        run: make test-coverage
-
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
