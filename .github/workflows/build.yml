@@ -39,5 +39,5 @@ jobs:
       - name: Lint Code
         run: npx eslint .
 
-      - name: Build Project
-        run: NODE_ENV=production npx webpack
+      - name: Build Project with Vite
+        run: npm run build

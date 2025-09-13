@@ -5,6 +5,7 @@ import stylistic from '@stylistic/eslint-plugin'
 
 export default defineConfig([
   {
+    ignores: ['dist/**', 'node_modules/**'],
     files: ['**/*.{js,mjs,cjs}'],
     plugins: {
       js: js,
@@ -12,11 +13,13 @@ export default defineConfig([
     },
     extends: ['js/recommended'],
     languageOptions: {
-      globals: globals.node,
+      globals: globals.browser,
     },
     rules: {
       semi: ['error', 'never'],
       'quote-props': ['error', 'as-needed'],
+      '@stylistic/indent': ['error', 2],
+      '@stylistic/quotes': ['error', 'single'],
     },
   },
 ])

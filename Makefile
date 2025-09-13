@@ -1,11 +1,11 @@
-develop:
-	npx webpack serve
-
 install:
 	npm ci
 
+develop:
+	npx vite
+
 build:
-    NODE_ENV=production npx webpack
+	NODE_ENV=production npx vite build
 
 test:
 	npm test
@@ -13,4 +13,4 @@ test:
 lint:
 	npx eslint . --fix
 
-.PHONY: test
+.PHONY: install develop build test lint
