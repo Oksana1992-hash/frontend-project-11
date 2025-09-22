@@ -1,4 +1,4 @@
-export default (state, elements) => {
+export default (state, elements, i18nextInstance) => {
   // Управление значением input зависит от состояния
   const shouldClearInput = state.inputState === 'valid' || state.inputState === 'filling'
   elements.input.value = shouldClearInput ? '' : state.inputValue
@@ -17,7 +17,7 @@ export default (state, elements) => {
 
     if (state.inputState === 'valid') {
       elements.feedback.classList.add('text-success')
-      elements.feedback.textContent = 'RSS успешно загружен'
+      elements.feedback.textContent = i18nextInstance.t('status.success')
     } else {
       // При 'filling' и любых других состояниях feedback пустой
       elements.feedback.textContent = ''

@@ -1,16 +1,15 @@
 import * as yup from 'yup'
 
-export default (url, feeds) => {
+export default (url, feeds, i18nextInstance) => {
   const schema = yup.string()
     .required()
-    .url('Ссылка должна быть валидным URL')
-    .test(
-      'is-unique',
-      'RSS уже существует',
-      (value) => !Array.isArray(feeds) || !feeds.includes(value),
-    )
+    .url()
+    .notOneOf(feeds)
 
   return schema.validate(url)
     .then(() => null)
-    .catch((err) => err.message)
+    .catch((error) => {
+      const errorKey = error.message || 'errors.unknown'
+      return i18nextInstance.t(errorKey)
+    })
 }
