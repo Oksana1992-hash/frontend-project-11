@@ -52,6 +52,24 @@
             </div>
         </div>
     </footer>
+    <!-- Модальное окно -->
+    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalArticleDescription"></p>
+                </div>
+                <div class="modal-footer">
+                    <a id="modalArticleLink" href="#" target="_blank" class="btn btn-primary">Читать полностью</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script type="module" defer="defer" src="/src/main.js"></script>
 </body>
 
