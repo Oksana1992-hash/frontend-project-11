@@ -4,7 +4,7 @@ export default (url, feeds, i18nextInstance) => {
   const schema = yup.string()
     .required()
     .url()
-    .notOneOf(feeds)
+    .notOneOf(feeds.map((feed) => feed.link))
 
   return schema.validate(url)
     .then(() => null)
