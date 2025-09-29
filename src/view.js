@@ -20,7 +20,7 @@ const renderInput = (state, elements, i18nextInstance) => {
       elements.submit.disabled = false
       elements.input.value = state.inputValue
       elements.input.classList.add('is-invalid')
-      elements.feedback.textContent = i18nextInstance.t(state.error)
+      elements.feedback.textContent = state.error
       elements.feedback.classList.remove('text-success')
       elements.feedback.classList.add('text-danger')
       break
@@ -47,9 +47,11 @@ const renderFeeds = (state, elements, i18nextInstance) => {
   const cardTitle = document.createElement('h2')
   cardTitle.classList.add('card-title', 'h4')
   cardTitle.textContent = i18nextInstance.t('elements.feeds')
+
   elements.feeds.append(card)
   card.append(cardBody)
   cardBody.append(cardTitle)
+
   state.feeds.forEach(({ title, description }) => {
     const ul = document.createElement('ul')
     ul.classList.add('list-group', 'border-0', 'rounded-0')
@@ -61,6 +63,7 @@ const renderFeeds = (state, elements, i18nextInstance) => {
     const p = document.createElement('p')
     p.classList.add('m-0', 'small', 'text-black-50')
     p.textContent = description
+
     card.append(ul)
     ul.append(li)
     li.append(h3)
@@ -78,6 +81,7 @@ const renderPosts = (state, elements, i18nextInstance) => {
   const cardTitle = document.createElement('h2')
   cardTitle.classList.add('card-title', 'h4')
   cardTitle.textContent = i18nextInstance.t('elements.posts')
+
   elements.posts.append(card)
   card.append(cardBody)
   cardBody.append(cardTitle)
@@ -92,8 +96,14 @@ const renderPosts = (state, elements, i18nextInstance) => {
     a.setAttribute('data-id', id)
     a.setAttribute('target', '_blank')
     a.setAttribute('rel', 'noopener noreferrer')
-    a.classList.add('fw-bold')
     a.textContent = title
+
+    if (state.uiState.viewedPostsId.includes(id)) {
+      a.classList.add('fw-normal')
+    } else {
+      a.classList.add('fw-bold')
+    }
+
     const button = document.createElement('button')
     button.setAttribute('type', 'button')
     button.setAttribute('data-id', id)
@@ -101,11 +111,34 @@ const renderPosts = (state, elements, i18nextInstance) => {
     button.setAttribute('data-bs-target', '#modal')
     button.classList.add('btn', 'btn-outline-primary', 'btn-sm')
     button.textContent = i18nextInstance.t('elements.button')
+
     card.append(ul)
     ul.append(li)
     li.append(a)
     li.append(button)
   })
+}
+
+// Отрисовка модального окна
+const renderModal = (state, elements) => {
+  elements.modalHeader.innerHTML = ''
+  elements.modalBody.innerHTML = ''
+
+  const activePost = state.posts.filter((post) => post.id === state.uiState.modalPostId)
+  const [{ description, title }] = activePost
+
+  const h5 = document.createElement('h5')
+  h5.classList.add('modal-title')
+  h5.textContent = title
+  const closeButton = document.createElement('button')
+  closeButton.classList.add('btn-close', 'close')
+  closeButton.setAttribute('type', 'button')
+  closeButton.setAttribute('data-bs-dismiss', 'modal')
+  closeButton.setAttribute('aria-label', 'Close')
+  elements.modalBody.textContent = description
+
+  elements.modalHeader.append(h5)
+  elements.modalHeader.append(closeButton)
 }
 
 export default (path, state, elements, i18nextInstance) => {
@@ -119,26 +152,14 @@ export default (path, state, elements, i18nextInstance) => {
     case 'posts':
       renderPosts(state, elements, i18nextInstance)
       break
+    case 'uiState.modalPostId':
+      renderModal(state, elements)
+      break
+    case 'uiState.viewedPosts':
+      renderPosts(state, elements, i18nextInstance)
+      break
     default:
       break
+
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import setYupLocale from './utils/yupLocale.js'
 import onChange from 'on-change'
 import ru from './locales/rus.js'
@@ -15,6 +16,10 @@ const state = {
   feeds: [],
   posts: [],
   error: null,
+  uiState: {
+    modalPostId: null,
+    viewedPostsId: [],
+  }
 }
 
 const elements = {
@@ -24,6 +29,9 @@ const elements = {
   feedback: document.querySelector('.feedback'),
   feeds: document.querySelector('.feeds'),
   posts: document.querySelector('.posts'),
+  modalHeader: document.querySelector('.modal-header'),
+  modalBody: document.querySelector('.modal-body'),
+  modalButtons: document.querySelector('.btn-outline-primary'),
 }
 
 setYupLocale()
@@ -106,6 +114,14 @@ i18nextInstance.init({
               throw new Error(watchedState.error)
             })
         })
+    })
+
+    elements.posts.addEventListener('click', (e) => {
+      if (e.target.classList.contains('btn-outline-primary')) {
+        e.preventDefault()
+        watchedState.uiState.modalPostId = e.target.dataset.id
+        watchedState.uiState.viewedPostsId.push(e.target.dataset.id)
+      }
     })
     updatePosts(watchedState)
   })
