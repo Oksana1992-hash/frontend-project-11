@@ -7,6 +7,7 @@ import render from './view.js'
 import i18next from 'i18next'
 import fetchRSS from './api/fetchRSS.js'
 import parse from './utils/parse.js'
+import uniqueId from 'lodash/uniqueId.js'
 
 const state = {
   inputState: 'filling', // valid, invalid, filling, sending
@@ -38,6 +39,33 @@ i18nextInstance.init({
 })
 
   .then(() => {
+    // Обновление RSS-потоков
+    const updatePosts = (watchedState) => {
+      const promises = watchedState.feeds.map((feed) => fetchRSS(feed.link)
+        .then((xml) => {
+          const addedPostLinks = watchedState.posts.map((post) => post.link)
+          const { posts } = parse(xml, feed.link)
+          const newPosts = posts.filter((post) => !addedPostLinks.includes(post.link))
+          const postsWithId = newPosts.map((post) => ({
+            ...post,
+            id: uniqueId(),
+            feedId: feed.id,
+          }))
+          watchedState.posts.unshift(...postsWithId)
+          console.log(`Добавлено ${newPosts.length} новых постов для фида ${feed.id}`)
+          return null
+        })
+        .catch((error) => {
+          console.error(`Ошибка при получении данных из ${feed.id}:`, error.message || error)
+          return null
+        }))
+      return Promise.all(promises)
+        .finally(() => setTimeout(() => {
+          console.log('Очередная проверка обновлений RSS-потоков')
+          updatePosts(watchedState)
+        }, 5000))
+    }
+
     // View (представление)
     const watchedState = onChange(state, (path) => render(path, state, elements, i18nextInstance))
 
@@ -79,4 +107,5 @@ i18nextInstance.init({
             })
         })
     })
+    updatePosts(watchedState)
   })
