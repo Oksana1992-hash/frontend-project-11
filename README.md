@@ -1,8 +1,16 @@
 # RSS-aggregator Project
 
-## Requirements
-
 ## Installing
+
+Follow these steps in the command prompt sequentially:
+
+1. Clone this project repository locally: **git clone git@github.com:Oksana1992-hash/frontend-project-11.git**
+2. Go to the root directory of the project: **cd frontend-project-11**
+3. Install dependencies: **npm ci**
+4. Deploy the project in the browser: **make develop**
+5. Building the project (optional): **make build**
+The compiled files will be placed in the dist/ folder.
+
 
 ## Hexlet tests and linter status:
 [![Actions Status](https://github.com/Oksana1992-hash/frontend-project-11/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Oksana1992-hash/frontend-project-11/actions)
