@@ -1,11 +1,11 @@
 export default {
   translation: {
     errors: {
-      required: 'Поле не должно быть пустым',
+      required: 'Не должно быть пустым',
       url: 'Ссылка должна быть валидным URL',
-      alreadyOnTheList: 'RSS уже существует!',
-      network: 'Сетевая ошибка, попробуйте позже',
-      parseError: 'Ошибка разбора XML: неверный формат RSS',
+      alreadyOnTheList: 'RSS уже существует',
+      network: 'Ошибка сети',
+      parseError: 'Ресурс не содержит валидный RSS',
       noItems: 'В RSS-ленте ничего не найдено',
       unknown: 'Неизвестная ошибка, попробуйте позже',
     },
