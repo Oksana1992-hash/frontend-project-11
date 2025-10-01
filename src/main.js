@@ -88,7 +88,8 @@ i18nextInstance.init({
 
       watchedState.inputValue = url
 
-      validate(url, watchedState.feeds, i18nextInstance)
+      const existingLinks = watchedState.feeds.map((feed) => feed.link)
+      validate(url, existingLinks, i18nextInstance)
         .then((error) => {
           if (error) {
             watchedState.error = error
@@ -101,17 +102,23 @@ i18nextInstance.init({
         })
         .then((link) => {
           watchedState.inputState = 'sending'
-          fetchRSS(link, i18nextInstance)
+          fetchRSS(link)
             .then((xml) => {
-              const { feed, posts } = parse(xml, url, i18nextInstance)
-              watchedState.feeds = [...watchedState.feeds, feed]
-              watchedState.posts = [...watchedState.posts, ...posts]
+              const result = parse(xml, url)
+              if (result === null) {
+                throw new Error('errors.parseError')
+              }
+              const { feed, posts } = result
+              const feedId = uniqueId()
+              watchedState.feeds.push({ ...feed, id: feedId, link: url })
+              const postsWithId = posts.map((post) => ({ ...post, id: uniqueId(), feedId }))
+              watchedState.posts.unshift(...postsWithId)
               watchedState.inputState = 'valid'
             })
             .catch((error) => {
-              watchedState.error = error.message
+              const errorMessage = i18nextInstance.t(error.message)
+              watchedState.error = errorMessage
               watchedState.inputState = 'invalid'
-              throw new Error(watchedState.error)
             })
         })
     })

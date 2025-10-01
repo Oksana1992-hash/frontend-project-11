@@ -1,6 +1,4 @@
-import uniqueId from 'lodash/uniqueId.js'
-
-export default (xml, url, feedId = uniqueId()) => {
+export default (xml) => {
   const posts = []
 
   const parser = new DOMParser()
@@ -17,19 +15,15 @@ export default (xml, url, feedId = uniqueId()) => {
   }
 
   const feed = {
-    id: feedId,
-    link: url,
     title: doc.querySelector('channel > title')?.textContent ?? '',
     description: doc.querySelector('channel > description')?.textContent ?? ''
   }
 
-  items.forEach((item) => {
+  doc.querySelectorAll('item').forEach((item) => {
     posts.push({
-      feedId,
-      title: item.querySelector('title')?.textContent?.trim() ?? '',
-      description: item.querySelector('description')?.textContent?.trim() ?? '',
-      link: item.querySelector('link')?.textContent?.trim() ?? '',
-      id: uniqueId(),
+      title: item.querySelector('title').textContent,
+      description: item.querySelector('description').textContent,
+      link: item.querySelector('link').textContent,
     })
   })
 
