@@ -19,7 +19,7 @@ const state = {
   uiState: {
     modalPostId: null,
     viewedPostsId: [],
-  }
+  },
 }
 
 const elements = {
@@ -49,12 +49,12 @@ i18nextInstance.init({
   .then(() => {
     // Обновление RSS-потоков
     const updatePosts = (watchedState) => {
-      const promises = watchedState.feeds.map((feed) => fetchRSS(feed.link)
+      const promises = watchedState.feeds.map(feed => fetchRSS(feed.link)
         .then((xml) => {
           const addedPostLinks = watchedState.posts.map((post) => post.link)
           const { posts } = parse(xml, feed.link)
-          const newPosts = posts.filter((post) => !addedPostLinks.includes(post.link))
-          const postsWithId = newPosts.map((post) => ({
+          const newPosts = posts.filter(post => !addedPostLinks.includes(post.link))
+          const postsWithId = newPosts.map(post => ({
             ...post,
             id: uniqueId(),
             feedId: feed.id,
@@ -75,8 +75,7 @@ i18nextInstance.init({
     }
 
     // View (представление)
-    const watchedState = onChange(state, (path) => render(path, state, elements, i18nextInstance))
-
+    const watchedState = onChange(state, path => render(path, state, elements, i18nextInstance))
 
     // Contoller (события)
     elements.form.addEventListener('submit', (e) => {
@@ -88,14 +87,15 @@ i18nextInstance.init({
 
       watchedState.inputValue = url
 
-      const existingLinks = watchedState.feeds.map((feed) => feed.link)
+      const existingLinks = watchedState.feeds.map(feed => feed.link)
       validate(url, existingLinks, i18nextInstance)
         .then((error) => {
           if (error) {
             watchedState.error = error
             watchedState.inputState = 'invalid'
             throw new Error(error)
-          } else {
+          }
+          else {
             watchedState.error = null
             return url
           }
@@ -111,7 +111,7 @@ i18nextInstance.init({
               const { feed, posts } = result
               const feedId = uniqueId()
               watchedState.feeds.push({ ...feed, id: feedId, link: url })
-              const postsWithId = posts.map((post) => ({ ...post, id: uniqueId(), feedId }))
+              const postsWithId = posts.map(post => ({ ...post, id: uniqueId(), feedId }))
               watchedState.posts.unshift(...postsWithId)
               watchedState.inputState = 'valid'
             })

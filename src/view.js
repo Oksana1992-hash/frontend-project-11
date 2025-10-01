@@ -100,7 +100,8 @@ const renderPosts = (state, elements, i18nextInstance) => {
 
     if (state.uiState.viewedPostsId.includes(id)) {
       a.classList.add('fw-normal')
-    } else {
+    }
+    else {
       a.classList.add('fw-bold')
     }
 
@@ -124,7 +125,7 @@ const renderModal = (state, elements) => {
   elements.modalHeader.innerHTML = ''
   elements.modalBody.innerHTML = ''
 
-  const activePost = state.posts.filter((post) => post.id === state.uiState.modalPostId)
+  const activePost = state.posts.filter(post => post.id === state.uiState.modalPostId)
   const [{ description, title }] = activePost
 
   const h5 = document.createElement('h5')
@@ -160,6 +161,5 @@ export default (path, state, elements, i18nextInstance) => {
       break
     default:
       break
-
   }
 }

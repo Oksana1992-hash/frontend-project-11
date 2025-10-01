@@ -16,7 +16,7 @@ export default (xml) => {
 
   const feed = {
     title: doc.querySelector('channel > title')?.textContent ?? '',
-    description: doc.querySelector('channel > description')?.textContent ?? ''
+    description: doc.querySelector('channel > description')?.textContent ?? '',
   }
 
   doc.querySelectorAll('item').forEach((item) => {
