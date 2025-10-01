@@ -51,7 +51,7 @@ i18nextInstance.init({
     const updatePosts = (watchedState) => {
       const promises = watchedState.feeds.map(feed => fetchRSS(feed.link)
         .then((xml) => {
-          const addedPostLinks = watchedState.posts.map((post) => post.link)
+          const addedPostLinks = watchedState.posts.map(post => post.link)
           const { posts } = parse(xml, feed.link)
           const newPosts = posts.filter(post => !addedPostLinks.includes(post.link))
           const postsWithId = newPosts.map(post => ({

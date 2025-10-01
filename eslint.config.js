@@ -8,7 +8,7 @@ export default defineConfig([
     ignores: ['dist/**', 'node_modules/**'],
     files: ['**/*.{js,mjs,cjs}'],
     plugins: {
-      'js': js,
+      js: js,
       '@stylistic': stylistic,
     },
     extends: ['js/recommended'],
@@ -16,7 +16,7 @@ export default defineConfig([
       globals: globals.browser,
     },
     rules: {
-      'semi': ['error', 'never'],
+      semi: ['error', 'never'],
       'quote-props': ['error', 'as-needed'],
       '@stylistic/indent': ['error', 2],
       '@stylistic/quotes': ['error', 'single'],
